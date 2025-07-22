@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - সদস্য তালিকা</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <button id="sidebar-toggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h1>সদস্য তালিকা</h1>
+        <button id="logout-btn" class="btn logout-btn">লগআউট</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li><a href="bazar-list.html"><i class="fas fa-shopping-basket"></i> বাজার তালিকা</a></li>
+                <li><a href="meal-count.html"><i class="fas fa-utensils"></i> মিল সংখ্যা</a></li>
+                <li><a href="member-list.html"><i class="fas fa-users"></i> সদস্য তালিকা</a></li>
+                <li><a href="expense-report.html"><i class="fas fa-money-bill-wave"></i> খরচ ও হিসাব রিপোর্ট</a></li>
+                <li><a href="developer-profile.html"><i class="fas fa-code"></i> ডেভেলপার প্রোফাইল</a></li>
+                <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> ডার্ক মোড</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container">
+        <section class="data-card">
+            <h2>সকল সদস্য</h2>
+            <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ছবি</th>
+                            <th>নাম</th>
+                            <th>মোবাইল</th>
+                            <th>ইমেইল</th>
+                            <th>ঠিকানা</th>
+                            <th>ভাড়া</th>
+                            <th>যোগদানের তারিখ</th>
+                            <th class="admin-only">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="member-list-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="form-card admin-only hidden" id="edit-member-section">
+            <h2>সদস্যের তথ্য এডিট করুন</h2>
+            <form id="edit-member-form">
+                <input type="hidden" id="edit-member-id">
+                <div class="input-group">
+                    <label for="edit-member-name">নাম:</label>
+                    <input type="text" id="edit-member-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-member-phone">মোবাইল:</label>
+                    <input type="tel" id="edit-member-phone" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-member-email">ইমেইল:</label>
+                    <input type="email" id="edit-member-email" required disabled> </div>
+                <div class="input-group">
+                    <label for="edit-member-address">ঠিকানা:</label>
+                    <input type="text" id="edit-member-address" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-member-rent">মাসিক ভাড়া:</label>
+                    <input type="number" id="edit-member-rent" min="0" required>
+                </div>
+                <button type="submit" class="btn primary-btn">আপডেট করুন</button>
+                <button type="button" class="btn danger-btn" id="delete-member-btn">সদস্য ডিলিট করুন</button>
+                <button type="button" class="btn secondary-btn" id="cancel-edit-btn">বাতিল করুন</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/member.js"></script>
+</body>
+</html>
