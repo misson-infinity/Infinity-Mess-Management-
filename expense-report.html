@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - খরচ ও হিসাব রিপোর্ট</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <button id="sidebar-toggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h1>খরচ ও হিসাব রিপোর্ট</h1>
+        <button id="logout-btn" class="btn logout-btn">লগআউট</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li><a href="bazar-list.html"><i class="fas fa-shopping-basket"></i> বাজার তালিকা</a></li>
+                <li><a href="meal-count.html"><i class="fas fa-utensils"></i> মিল সংখ্যা</a></li>
+                <li><a href="member-list.html"><i class="fas fa-users"></i> সদস্য তালিকা</a></li>
+                <li><a href="expense-report.html"><i class="fas fa-money-bill-wave"></i> খরচ ও হিসাব রিপোর্ট</a></li>
+                <li><a href="developer-profile.html"><i class="fas fa-code"></i> ডেভেলপার প্রোফাইল</a></li>
+                <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> ডার্ক মোড</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container">
+        <section class="form-card admin-only">
+            <h2>অন্যান্য বিল যোগ করুন (অ্যাডমিন)</h2>
+            <form id="add-other-bill-form">
+                <div class="input-group">
+                    <label for="bill-type">বিল এর ধরণ:</label>
+                    <select id="bill-type" required>
+                        <option value="">নির্বাচন করুন</option>
+                        <option value="maid">মেইড বিল</option>
+                        <option value="current">কারেন্ট বিল</option>
+                        <option value="wifi">ওয়াইফাই বিল</option>
+                        <option value="other">অন্যান্য</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="bill-amount">পরিমাণ (টাকা):</label>
+                    <input type="number" id="bill-amount" min="0" required>
+                </div>
+                <div class="input-group">
+                    <label for="bill-month">মাস ও বছর:</label>
+                    <input type="month" id="bill-month" required>
+                </div>
+                <button type="submit" class="btn primary-btn">বিল যোগ করুন</button>
+            </form>
+        </section>
+
+        <section class="data-card">
+            <h2>মাসিক হিসাব রিপোর্ট</h2>
+            <div class="filter-controls">
+                <label for="report-month-select">মাস নির্বাচন করুন:</label>
+                <input type="month" id="report-month-select">
+                <button class="btn secondary-btn" id="generate-report-btn">রিপোর্ট জেনারেট করুন</button>
+            </div>
+
+            <div id="report-summary">
+                <h3>সাধারণ হিসাব</h3>
+                <p>মোট বাজার খরচ: <span id="total-bazar-cost">0.00</span> টাকা</p>
+                <p>মোট দোকানের বাকি: <span id="total-shop-due">0.00</span> টাকা</p>
+                <p>মোট বিল (মেইড, কারেন্ট, ওয়াইফাই, অন্যান্য): <span id="total-other-bills">0.00</span> টাকা</p>
+                <p>মাসিক মোট মিল: <span id="total-monthly-meals-report">0.0</span> মিল</p>
+                <p>মিল রেট: <span id="meal-rate">0.00</span> টাকা/মিল</p>
+            </div>
+
+            <h3>সদস্যদের ব্যক্তিগত হিসাব</h3>
+            <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>সদস্যের নাম</th>
+                            <th>মাসিক ভাড়া</th>
+                            <th>মোট মিল</th>
+                            <th>খাবারের খরচ</th>
+                            <th>অন্যান্য বিলের অংশ</th>
+                            <th>মোট খরচ</th>
+                            <th>মোট বাজার দিয়েছে</th>
+                            <th>বাকি/ফেরত</th>
+                        </tr>
+                    </thead>
+                    <tbody id="member-expense-body">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="report-actions">
+                <button class="btn primary-btn" id="send-whatsapp-btn"><i class="fab fa-whatsapp"></i> হোয়াটসঅ্যাপে পাঠান</button>
+                <button class="btn secondary-btn" id="send-email-btn"><i class="fas fa-envelope"></i> ইমেইলে পাঠান</button>
+                </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/expense.js"></script>
+</body>
+</html>
