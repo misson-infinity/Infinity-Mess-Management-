@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - ড্যাশবোর্ড</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <button id="sidebar-toggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h1 id="mess-name-display">আপনার মেস</h1>
+        <div class="header-info">
+            <span id="current-month"></span>
+            <span id="current-date"></span>
+        </div>
+        <button id="logout-btn" class="btn logout-btn">লগআউট</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li><a href="bazar-list.html"><i class="fas fa-shopping-basket"></i> বাজার তালিকা</a></li>
+                <li><a href="meal-count.html"><i class="fas fa-utensils"></i> মিল সংখ্যা</a></li>
+                <li><a href="member-list.html"><i class="fas fa-users"></i> সদস্য তালিকা</a></li>
+                <li><a href="expense-report.html"><i class="fas fa-money-bill-wave"></i> খরচ ও হিসাব রিপোর্ট</a></li>
+                <li><a href="developer-profile.html"><i class="fas fa-code"></i> ডেভেলপার প্রোফাইল</a></li>
+                <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> ডার্ক মোড</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container dashboard-content">
+        <section class="dashboard-section" id="daily-bazar-section">
+            <h2>আজকের বাজার দায়িত্ব</h2>
+            <div id="bazar-duty-list">
+                <p>আজকের বাজারের দায়িত্বে: <span id="today-bazar-person">কেউ নেই</span></p>
+                <button class="btn primary-btn admin-only" id="set-bazar-duty-btn">বাজার ডিউটি সেট করুন</button>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="meal-tracking-section">
+            <h2>আজকের মিল</h2>
+            <div class="meal-options">
+                <label>
+                    <input type="checkbox" id="meal-morning"> সকাল (0.5)
+                </label>
+                <label>
+                    <input type="checkbox" id="meal-noon"> দুপুর (1)
+                </label>
+                <label>
+                    <input type="checkbox" id="meal-night"> রাত (1)
+                </label>
+            </div>
+            <p>আপনার আজকের মোট মিল: <span id="total-daily-meal">0</span></p>
+        </section>
+
+        <section class="dashboard-section" id="notice-board-section">
+            <h2>নোটিশ বোর্ড</h2>
+            <div id="notices">
+                </div>
+            <form id="post-notice-form" class="admin-only">
+                <textarea id="notice-content" placeholder="একটি নতুন নোটিশ লিখুন..." rows="3"></textarea>
+                <button type="submit" class="btn primary-btn">নোটিশ পোস্ট করুন</button>
+            </form>
+            <div id="notice-comments">
+                <form id="post-comment-form">
+                    <input type="text" id="comment-content" placeholder="কমেন্ট লিখুন...">
+                    <button type="submit" class="btn secondary-btn">কমেন্ট করুন</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="dashboard-section hidden admin-only" id="join-requests-section">
+            <h2>যোগদানের আবেদন</h2>
+            <div id="join-requests-list">
+                <p>কোনো নতুন আবেদন নেই।</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/common.js"></script> </body>
+</html>
