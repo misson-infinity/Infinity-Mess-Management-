@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - মেস তৈরি করুন</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>মেস তৈরি করুন</h1>
+    </header>
+
+    <main class="container">
+        <section class="form-card">
+            <h2>নতুন মেস তৈরি করুন</h2>
+            <form id="create-mess-form">
+                <div class="input-group">
+                    <label for="mess-name">মেসের নাম:</label>
+                    <input type="text" id="mess-name" required>
+                </div>
+                <button type="submit" class="btn primary-btn">মেস তৈরি করুন</button>
+            </form>
+            <div id="mess-code-display" class="hidden">
+                <p>আপনার মেস কোড:</p>
+                <h3 id="generated-mess-code"></h3>
+                <p>এই কোডটি শেয়ার করুন যাতে সদস্যরা আপনার মেসে যোগ দিতে পারে।</p>
+                <button class="btn secondary-btn" onclick="copyMessCode()">কোড কপি করুন</button>
+                <a href="dashboard.html" class="btn primary-btn">ড্যাশবোর্ডে যান</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script> <script>
+        // Separate script for create-mess page logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const createMessForm = document.getElementById('create-mess-form');
+            const messCodeDisplay = document.getElementById('mess-code-display');
+            const generatedMessCode = document.getElementById('generated-mess-code');
+
+            createMessForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const messName = createMessForm['mess-name'].value;
+                const user = auth.currentUser;
+
+                if (!user) {
+                    alert('লগইন করা নেই। অনুগ্রহ করে লগইন করুন।');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Check if user is admin
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists || userDoc.data().role !== 'admin') {
+                    alert('মেস তৈরি করার অনুমতি নেই।');
+                    return;
+                }
+
+                try {
+                    // Generate a 5-character unique code
+                    let messCode = '';
+                    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                    for (let i = 0; i < 5; i++) {
+                        messCode += characters.charAt(Math.floor(Math.random() * characters.length));
+                    }
+
+                    // Check if code already exists (unlikely but good practice)
+                    const existingMess = await db.collection('messes').where('messCode', '==', messCode).get();
+                    if (!existingMess.empty) {
+                        // Regenerate or handle collision
+                        alert('কোড জেনারেট করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+                        return;
+                    }
+
+                    await db.collection('messes').add({
+                        name: messName,
+                        adminId: user.uid,
+                        messCode: messCode,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // Update admin's user document with messId
+                    const messSnapshot = await db.collection('messes').where('adminId', '==', user.uid).where('name', '==', messName).get();
+                    if (!messSnapshot.empty) {
+                        const messId = messSnapshot.docs[0].id;
+                        await db.collection('users').doc(user.uid).update({ messId: messId });
+                    }
+
+                    generatedMessCode.textContent = messCode;
+                    messCodeDisplay.classList.remove('hidden');
+                    createMessForm.classList.add('hidden');
+                    alert('মেস সফলভাবে তৈরি হয়েছে!');
+
+                } catch (error) {
+                    console.error('মেস তৈরি ব্যর্থ:', error.message);
+                    alert(`মেস তৈরি ব্যর্থ: ${error.message}`);
+                }
+            });
+        });
+
+        function copyMessCode() {
+            const code = document.getElementById('generated-mess-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('মেস কোড কপি করা হয়েছে: ' + code);
+            }).catch(err => {
+                console.error('কোড কপি করতে ব্যর্থ:', err);
+            });
+        }
+    </script>
+</body>
+</html>
