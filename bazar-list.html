@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - বাজার তালিকা</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <button id="sidebar-toggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h1>বাজার তালিকা</h1>
+        <button id="logout-btn" class="btn logout-btn">লগআউট</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li><a href="bazar-list.html"><i class="fas fa-shopping-basket"></i> বাজার তালিকা</a></li>
+                <li><a href="meal-count.html"><i class="fas fa-utensils"></i> মিল সংখ্যা</a></li>
+                <li><a href="member-list.html"><i class="fas fa-users"></i> সদস্য তালিকা</a></li>
+                <li><a href="expense-report.html"><i class="fas fa-money-bill-wave"></i> খরচ ও হিসাব রিপোর্ট</a></li>
+                <li><a href="developer-profile.html"><i class="fas fa-code"></i> ডেভেলপার প্রোফাইল</a></li>
+                <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> ডার্ক মোড</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container">
+        <section class="form-card admin-only">
+            <h2>বাজার ডিউটি সেট করুন</h2>
+            <form id="set-bazar-duty-form">
+                <div class="input-group">
+                    <label for="duty-date">তারিখ:</label>
+                    <input type="date" id="duty-date" required>
+                </div>
+                <div class="input-group">
+                    <label for="duty-member">সদস্য নির্বাচন করুন:</label>
+                    <select id="duty-member" required>
+                        </select>
+                </div>
+                <button type="submit" class="btn primary-btn">ডিউটি সেট করুন</button>
+            </form>
+        </section>
+
+        <section class="form-card">
+            <h2>আপনার বাজার যোগ করুন</h2>
+            <form id="add-bazar-entry-form">
+                <div class="input-group">
+                    <label for="bazar-date">তারিখ:</label>
+                    <input type="date" id="bazar-date" required>
+                </div>
+                <div class="input-group">
+                    <label for="bazar-amount">পরিমাণ (টাকা):</label>
+                    <input type="number" id="bazar-amount" min="0" required>
+                </div>
+                <div class="input-group">
+                    <label for="bazar-description">বাজারের বর্ণনা (যেমন: চাল, ডাল, সবজি):</label>
+                    <textarea id="bazar-description" rows="3" placeholder="বাজারের তালিকা লিখুন..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="bazar-comment">মন্তব্য (ঐচ্ছিক):</label>
+                    <input type="text" id="bazar-comment">
+                </div>
+                <button type="submit" class="btn primary-btn">বাজার যোগ করুন</button>
+            </form>
+        </section>
+
+        <section class="data-card admin-only">
+            <h2>দোকানের বাকি যোগ করুন (অ্যাডমিন)</h2>
+            <form id="add-shop-due-form">
+                <div class="input-group">
+                    <label for="due-date">তারিখ:</label>
+                    <input type="date" id="due-date" required>
+                </div>
+                <div class="input-group">
+                    <label for="due-amount">বাকি পরিমাণ (টাকা):</label>
+                    <input type="number" id="due-amount" min="0" required>
+                </div>
+                <div class="input-group">
+                    <label for="due-description">বর্ণনা:</label>
+                    <input type="text" id="due-description" required>
+                </div>
+                <button type="submit" class="btn primary-btn">বাকি যোগ করুন</button>
+            </form>
+        </section>
+
+        <section class="data-card">
+            <h2>বাজার এন্ট্রি এবং ডিউটি তালিকা</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>তারিখ</th>
+                        <th>সদস্য/বর্ণনা</th>
+                        <th>পরিমাণ (টাকা)</th>
+                        <th>ধরন</th>
+                        <th>অ্যাকশন (অ্যাডমিন)</th>
+                    </tr>
+                </thead>
+                <tbody id="bazar-list-body">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/bazar.js"></script>
+</body>
+</html>
