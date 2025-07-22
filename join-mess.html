@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - মেসে যোগদান করুন</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>মেসে যোগদান করুন</h1>
+    </header>
+
+    <main class="container">
+        <section class="form-card">
+            <h2>একটি মেসে যোগদানের জন্য আবেদন করুন</h2>
+            <form id="join-mess-form">
+                <div class="input-group">
+                    <label for="mess-code">মেস কোড (৫ অক্ষর):</label>
+                    <input type="text" id="mess-code" maxlength="5" required>
+                </div>
+                <div class="input-group">
+                    <label for="member-name">আপনার নাম:</label>
+                    <input type="text" id="member-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="member-phone">মোবাইল নম্বর:</label>
+                    <input type="tel" id="member-phone" required>
+                </div>
+                <div class="input-group">
+                    <label for="member-address">আপনার ঠিকানা:</label>
+                    <input type="text" id="member-address" required>
+                </div>
+                <div class="input-group">
+                    <label for="member-email">আপনার ইমেইল:</label>
+                    <input type="email" id="member-email" required>
+                </div>
+                <button type="submit" class="btn primary-btn">আবেদন করুন</button>
+            </form>
+            <p id="join-status-message"></p>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const joinMessForm = document.getElementById('join-mess-form');
+            const joinStatusMessage = document.getElementById('join-status-message');
+
+            joinMessForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const messCode = joinMessForm['mess-code'].value.toUpperCase();
+                const memberName = joinMessForm['member-name'].value;
+                const memberPhone = joinMessForm['member-phone'].value;
+                const memberAddress = joinMessForm['member-address'].value;
+                const memberEmail = joinMessForm['member-email'].value;
+
+                try {
+                    // Check if mess code exists
+                    const messQuery = await db.collection('messes').where('messCode', '==', messCode).get();
+                    if (messQuery.empty) {
+                        joinStatusMessage.textContent = 'এই মেস কোডটি বৈধ নয়।';
+                        joinStatusMessage.style.color = 'red';
+                        return;
+                    }
+
+                    const messDoc = messQuery.docs[0];
+                    const messId = messDoc.id;
+                    const adminId = messDoc.data().adminId;
+
+                    // Add application to 'joinRequests' collection
+                    await db.collection('joinRequests').add({
+                        messId: messId,
+                        memberName: memberName,
+                        memberPhone: memberPhone,
+                        memberAddress: memberAddress,
+                        memberEmail: memberEmail,
+                        requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: 'pending', // pending, accepted, rejected
+                        adminId: adminId
+                    });
+
+                    joinStatusMessage.textContent = 'আপনার আবেদন সফলভাবে পাঠানো হয়েছে! অ্যাডমিন অনুমোদনের জন্য অপেক্ষা করুন।';
+                    joinStatusMessage.style.color = 'green';
+                    joinMessForm.reset();
+
+                } catch (error) {
+                    console.error('যোগদান আবেদন ব্যর্থ:', error.message);
+                    joinStatusMessage.textContent = `আবেদন ব্যর্থ: ${error.message}`;
+                    joinStatusMessage.style.color = 'red';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
