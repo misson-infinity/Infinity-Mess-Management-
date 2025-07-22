@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Mess Management - ডেভেলপার প্রোফাইল</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <button id="sidebar-toggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h1>ডেভেলপার প্রোফাইল</h1>
+        <button id="logout-btn" class="btn logout-btn">লগআউট</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li><a href="bazar-list.html"><i class="fas fa-shopping-basket"></i> বাজার তালিকা</a></li>
+                <li><a href="meal-count.html"><i class="fas fa-utensils"></i> মিল সংখ্যা</a></li>
+                <li><a href="member-list.html"><i class="fas fa-users"></i> সদস্য তালিকা</a></li>
+                <li><a href="expense-report.html"><i class="fas fa-money-bill-wave"></i> খরচ ও হিসাব রিপোর্ট</a></li>
+                <li><a href="developer-profile.html"><i class="fas fa-code"></i> ডেভেলপার প্রোফাইল</a></li>
+                <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> ডার্ক মোড</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="container">
+        <section class="data-card developer-profile-section">
+            <img src="img/mahi-profile.jpg" alt="Md Habibur Rahman Mahi" onerror="this.src='img/default-profile.png'"> <h2>Md Habibur Rahman Mahi</h2>
+            <h3>Project: Infinity Mess Management</h3>
+            <p><strong>Organization/Brand:</strong> Created by Mahi</p>
+            <p><strong>Role:</strong> Lead Developer & Architect</p>
+            <p>
+                <a href="https://github.com/your-github-profile" target="_blank" title="GitHub Profile"><i class="fab fa-github fa-2x"></i></a>
+                <a href="https://www.your-portfolio.com" target="_blank" title="Portfolio"><i class="fas fa-globe fa-2x"></i></a>
+                <a href="mailto:your.email@example.com" title="Email Me"><i class="fas fa-envelope fa-2x"></i></a>
+                </p>
+            <p>
+                আপনার এই অ্যাপটি মেস এবং হোস্টেল ব্যবস্থাপনাকে সহজ করার লক্ষ্যে তৈরি করা হয়েছে।
+                যেকোনো ফিডব্যাক বা উন্নতির জন্য আমার সাথে যোগাযোগ করতে পারেন।
+            </p>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Infinity Group | Website Developed by Md Habibur Rahman Mahi</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // Simple logout for this page as well
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.getElementById('logout-btn');
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await auth.signOut();
+                    alert('সফলভাবে লগআউট করা হয়েছে।');
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('লগআউট ব্যর্থ:', error.message);
+                    alert(`লগআউট ব্যর্থ: ${error.message}`);
+                }
+            });
+            // Ensure sidebar and dark mode are active
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
